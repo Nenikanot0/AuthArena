@@ -1,10 +1,10 @@
 import express from 'express';
-import { googleLoginSuccess } from "../controllers/authController.js";
+import { googleLogin } from "../controllers/googleController.js";
 import passport from 'passport';
 
 const router=express.Router();
 
-router.get("/google", //sends the user to google auth page
+router.get("/login", //sends the user to google auth page
     passport.authenticate(
         "google", //strategy
         {
@@ -12,14 +12,14 @@ router.get("/google", //sends the user to google auth page
         }
     )
 );
-router.get("/google/callback", //after passport verifies,if success the redirect to success page else login page
+router.get("/callback", //after passport verifies,if success the redirect to success page else login page
     passport.authenticate(
         "google",
         {
             failureRedirect:"/login" //if failed
         }
     ),
-    googleLoginSuccess //if success
+    googleLogin //if success
 );
 
 export default router;

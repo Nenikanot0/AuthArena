@@ -1,17 +1,17 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import {users} from "../data/users.js";
+import {googleUsers} from "../../../data/googleUsers.js";
 
 passport.use(
     new GoogleStrategy(
         {
             clientID:process.env.GOOGLE_CLIENT_ID,
             clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL:"/auth/google/callback"
+            callbackURL:"http://localhost:5001/google/callback"
         },
         async(accessToken,refreshToken,profile,done)=>{
             try{
-                let user = users.find(
+                let user = googleUsers.find(
                     (u)=>u.googleId===profile.id
                 );
 
@@ -23,7 +23,7 @@ passport.use(
                         email:profile.emails[0].value,
                         avatar:profile.photos[0].value
                     };
-                    users.push(user);
+                    googleUsers.push(user);
                 }
                 done(null,user);
             }
@@ -41,7 +41,7 @@ passport.serializeUser((user,done)=>{ // ->Converts the bulky user profile objec
 });
 
 passport.deserializeUser((id,done)=>{ // ->Every time the user clicks a route on your site,Passport automatically extracts that id from the cookie and throws it to the function.
-    const user=users.find(
+    const user=googleUsers.find(
         (u)=>u.id===id
     );
     done(null,user); //error,user details

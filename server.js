@@ -3,12 +3,11 @@ import "dotenv/config";
 import cors from 'cors';
 import passport from 'passport';
 import session from 'express-session';
-import cookieParser from 'cookie-parser';
-import authRoutes from './routes/authRoutes.js';   
+import cookieParser from 'cookie-parser';  
 import path from "path";
 import { fileURLToPath } from "url"; 
-import "./config/passport.js";
-
+import googleRoutes from "./auth/google/routes/googleRoutes.js";
+import "./auth/google/config/passportGoogle.js";
 
 const app=express();
 
@@ -20,6 +19,8 @@ app.use(express.json()); //converts raw requests to json object
 app.use(cookieParser()); //parses raw http header to req.cookies object
 
 app.use(express.static("public"));
+
+//Set EJS as templating engine
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 
@@ -34,7 +35,8 @@ app.use(
 app.use(passport.initialize()); //initialize passport into express routing system 
 app.use(passport.session()); //to connect the passport to active session so to make req.user available
 
-app.use("/auth",authRoutes);
+app.use("/google",googleRoutes);
+
 app.get("/",(req,res) => { res.render("home") } );
 
 app.listen(process.env.PORT,()=>{console.log(`Server starting at port ${process.env.PORT}`);});
