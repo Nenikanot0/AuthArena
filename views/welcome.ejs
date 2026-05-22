@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="../public/style.css">
+
+</head>
+<body>
+    <div class="container">
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2vu8GxdfWZsbzYerZSyzcmezcB-_CP8Rjsg&s"
+            alt="Profile"
+            class="avatar"
+        >
+        <img src="user.avatar" class="avatar" alt="">
+        <h1>
+            Hello <%= user.name %>
+        </h1>
+        <label>Gmail below:-</label>
+        <p> 
+            <%= user.email %>
+        </p>
+    </div>
+</body>
+</html>
