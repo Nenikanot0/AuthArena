@@ -43,8 +43,8 @@ export const registerUser=async(req,res)=>{
             accessToken,
         });
 
-    }catch{
-        res.status(500).json({ message: err.message });
+    }catch(error){
+        res.status(500).json({ message: error.message });
     }
 }
 export const loginUser=async(req,res)=>{
@@ -84,8 +84,8 @@ export const loginUser=async(req,res)=>{
             message:"Successfully logged in",
             accessToken,
         });
-    }catch{
-        res.status(500).json({ message: err.message });
+    }catch(error){
+        res.status(500).json({ message: error.message });
     }
 }
 
