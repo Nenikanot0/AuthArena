@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import path from "path";
 import { fileURLToPath } from "url"; 
 import googleRoutes from "./auth/google/routes/googleRoutes.js";
+import jwtRoutes from "./auth/jwt/routes/jwtRoutes.js";
 import "./auth/google/config/passportGoogle.js";
 
 const app=express();
@@ -17,7 +18,7 @@ const __dirname=path.dirname(__filename);
 app.use(cors());  //allows backend to accept req and share data to frontend of various domains
 app.use(express.json()); //converts raw requests to json object
 app.use(cookieParser()); //parses raw http header to req.cookies object
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 //Set EJS as templating engine
@@ -36,6 +37,7 @@ app.use(passport.initialize()); //initialize passport into express routing syste
 app.use(passport.session()); //to connect the passport to active session so to make req.user available
 
 app.use("/google",googleRoutes);
+app.use("/jwt",jwtRoutes);
 
 app.get("/",(req,res) => { res.render("home") } );
 

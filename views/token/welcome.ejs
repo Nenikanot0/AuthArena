@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Authentication</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <%- include("../partials/navbar") %>
+
+    <section class="hero">
+        <h1>
+            JWT Authentication Lab
+        </h1>
+        <p>
+            Access Token + Refresh Token Authentication System
+        </p>
+    </section>
+    <section class="jwt-container">
+        <div class="card auth-card">
+            <h2>
+                Register
+            </h2>
+            <form id="registerForm">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
+                <button type="submit">
+                    Register
+                </button>
+
+            </form>
+
+            <p id="registerMessage"></p>
+
+        </div>
+
+        <div class="card auth-card">
+
+            <h2>
+                Login
+            </h2>
+
+            <form id="loginForm">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <p id="loginMessage"></p>
+
+        </div>
+
+        <div class="card auth-card">
+            <h2>
+                Access Token
+            </h2>
+            <textarea
+                id="tokenBox"
+                readonly
+                placeholder="Access Token Will Appear Here"
+            ></textarea>
+            <button id="logoutBtn">
+                Logout
+            </button>
+            <p id="logoutMessage"></p>
+        </div>
+    </section>
+
+    <script>
+        
+        const registerForm = document.getElementById("registerForm");
+        registerForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(registerForm);
+            const data = {
+                email: formData.get("email"),
+                password: formData.get("password")
+            };
+            const response = await fetch("/jwt/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            document.getElementById("registerMessage").innerText =
+                result.message;
+        });
+
+        // LOGIN
+        const loginForm = document.getElementById("loginForm");
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(loginForm);
+            const data = {
+                email: formData.get("email"),
+                password: formData.get("password")
+            };
+            const response = await fetch("/jwt/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            document.getElementById("loginMessage").innerText =
+                result.message;
+            if (result.accessToken) {
+                document.getElementById("tokenBox").value =
+                    result.accessToken;
+                localStorage.setItem(
+                    "accessToken",
+                    result.accessToken
+                );
+            }
+        });
+
+        // LOGOUT
+        document.getElementById("logoutBtn")
+            .addEventListener("click", async () => {
+            const response = await fetch("/jwt/logout", {
+                method: "POST"
+            });
+            const result = await response.json();
+            document.getElementById("logoutMessage").innerText =
+                result.message;
+            document.getElementById("tokenBox").value = "";
+            localStorage.removeItem("accessToken");
+        });
+    </script>
+</body>
+</html>

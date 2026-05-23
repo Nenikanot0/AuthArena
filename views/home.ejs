@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -136,6 +136,104 @@
 
             </a>
 
+        </div>
+
+    </section>
+
+    <%- include("partials/footer") %>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthArena</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    
+    <%- include("partials/navbar") %>
+    
+    <section class="hero">
+        <h1>AuthArena</h1>
+        <p>Explore Different Backend Authentication Systems</p>
+    </section>
+    
+    <section class="cards">
+        
+        <div class="card">
+            <h2>Social Login (OAuth)</h2>
+            <p>Third-party authentication flows using Google via passport callback cycles.</p>
+            <a href="http://localhost:5001/google/login">
+                <button>Try Now</button>
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>Token-Based Auth</h2>
+            <p>JWT login, with refresh tokens, and token expiry tracking.</p>
+            <a href="/jwt">
+                <button >Try Now</button>
+            </a>
+        </div>
+
+        <!-- 2. Session-Based Auth Module -->
+        <div class="card">
+            <h2>Session Auth</h2>
+            <p>Server-side sessions (Express/Redis), secure cookies, and session lifecycle management.</p>
+            <a href="/auth/session">
+                <button disabled>Try Now</button>
+            </a>
+        </div>
+
+        <!-- 3. OAuth / Social Login Module -->
+
+        <!-- 4. OTP Authentication Module -->
+        <div class="card">
+            <h2>OTP Authentication</h2>
+            <p>Passwordless authentication via time-sensitive Email or SMS verification codes.</p>
+            <a href="/auth/otp">
+                <button disabled>Try Now</button>
+            </a>
+        </div>
+
+        <!-- 5. MFA / 2FA Module -->
+        <div class="card">
+            <h2>MFA / 2FA</h2>
+            <p>Layered security combining basic credentials with TOTP Authenticator apps.</p>
+            <a href="/auth/mfa">
+                <button disabled>Try Now</button>
+            </a>
+        </div>
+
+        <!-- 6. Device Authentication Module -->
+        <div class="card">
+            <h2>Device Auth</h2>
+            <p>Device fingerprinting vectors, trusted setups, and new device verification flows.</p>
+            <a href="/auth/device">
+                <button disabled>Try Now</button>
+            </a>
+        </div>
+
+        <!-- 7. API Key Auth Module -->
+        <div class="card">
+            <h2>API Key Auth</h2>
+            <p>Backend-to-backend token validation with custom headers and granular rate limiting.</p>
+            <a href="/auth/api-key">
+                <button disabled>Try Now</button>
+            </a>
+        </div>
+
+        <!-- 8. Security Simulation Module -->
+        <div class="card">
+            <h2>Security Sandbox</h2>
+            <p>Live simulations for global rate limiting, brute force account locking, and CSRF vectors.</p>
+            <a href="/auth/sandbox">
+                <button disabled>Try Now</button>
+            </a>
         </div>
 
     </section>
