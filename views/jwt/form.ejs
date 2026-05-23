@@ -19,6 +19,7 @@
             Access Token + Refresh Token Authentication System
         </p>
     </section>
+    <h3 id="warning" >Upon refresh every data will be swipped out</h3>
     <section class="jwt-container">
         <div class="card auth-card">
             <h2>
@@ -79,19 +80,13 @@
 
         </div>
 
-        <div class="card auth-card">
-            <h2>
-                Access Token
-            </h2>
-            <textarea
-                id="tokenBox"
-                readonly
-                placeholder="Access Token Will Appear Here"
-            ></textarea>
+        <div class="card auth-card"> 
+            <div class="logout-container">
             <button id="logoutBtn">
                 Logout
             </button>
             <p id="logoutMessage"></p>
+        </div>
         </div>
     </section>
 
@@ -136,14 +131,11 @@
             const result = await response.json();
             document.getElementById("loginMessage").innerText =
                 result.message;
-            if (result.accessToken) {
-                document.getElementById("tokenBox").value =
-                    result.accessToken;
-                localStorage.setItem(
-                    "accessToken",
-                    result.accessToken
-                );
-            }
+                if (result.accessToken) {
+                    localStorage.setItem("accessToken",result.accessToken);
+
+                window.location.href =`/jwt/welcome?name=${result.user.name}&email=${result.user.email}`;
+                }
         });
 
         // LOGOUT

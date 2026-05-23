@@ -41,6 +41,7 @@ export const registerUser=async(req,res)=>{
         res.status(200).json({
             message:"Successfully registered",
             accessToken,
+            newUser
         });
 
     }catch(error){
@@ -80,10 +81,8 @@ export const loginUser=async(req,res)=>{
         })
         refreshTokens.push(refreshToken);
 
-        res.status(200).json({
-            message:"Successfully logged in",
-            accessToken,
-        });
+        res.status(200).json({message: "Login successful",accessToken,user});
+        
     }catch(error){
         res.status(500).json({ message: error.message });
     }
