@@ -19,25 +19,35 @@
             Access Token + Refresh Token Authentication System
         </p>
     </section>
-    <h3 id="warning" >Upon refresh every data will be swipped out</h3>
+
+    <h3 id="warning">
+        Upon refresh every data will be swipped out
+    </h3>
+
     <section class="jwt-container">
+
         <div class="card auth-card">
+
             <h2>
                 Register
             </h2>
+
             <form id="registerForm">
+
                 <input
                     type="email"
                     name="email"
                     placeholder="Enter Email"
                     required
                 >
+
                 <input
                     type="password"
                     name="password"
                     placeholder="Enter Password"
                     required
                 >
+
                 <button type="submit">
                     Register
                 </button>
@@ -80,76 +90,165 @@
 
         </div>
 
-        <div class="card auth-card"> 
+        <div class="card auth-card">
+
             <div class="logout-container">
-            <button id="logoutBtn">
-                Logout
-            </button>
-            <p id="logoutMessage"></p>
+
+                <button id="logoutBtn">
+                    Logout
+                </button>
+
+                <p id="logoutMessage"></p>
+
+            </div>
+
         </div>
-        </div>
+
     </section>
 
     <script>
-        
-        const registerForm = document.getElementById("registerForm");
-        registerForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const formData = new FormData(registerForm);
-            const data = {
-                email: formData.get("email"),
-                password: formData.get("password")
-            };
-            const response = await fetch("/jwt/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-            const result = await response.json();
-            document.getElementById("registerMessage").innerText =
-                result.message;
-        });
 
-        // LOGIN
-        const loginForm = document.getElementById("loginForm");
-        loginForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const formData = new FormData(loginForm);
-            const data = {
-                email: formData.get("email"),
-                password: formData.get("password")
-            };
-            const response = await fetch("/jwt/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-            const result = await response.json();
-            document.getElementById("loginMessage").innerText =
-                result.message;
-                if (result.accessToken) {
-                    localStorage.setItem("accessToken",result.accessToken);
+        const registerForm =
+        document.getElementById("registerForm");
 
-                window.location.href =`/jwt/welcome?name=${result.user.name}&email=${result.user.email}`;
+        registerForm.addEventListener(
+            "submit",
+            async(e)=>{
+
+                e.preventDefault();
+
+                const formData =
+                new FormData(registerForm);
+
+                const data = {
+
+                    email:formData.get("email"),
+
+                    password:formData.get("password")
+
+                };
+
+                const response = await fetch(
+
+                    "/jwt/register",
+
+                    {
+
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+
+                        credentials:"include",
+
+                        body:JSON.stringify(data)
+
+                    }
+
+                );
+
+                const result =
+                await response.json();
+
+                document.getElementById(
+                    "registerMessage"
+                ).innerText =
+                result.message;
+
+            }
+        );
+
+        const loginForm =
+        document.getElementById("loginForm");
+
+        loginForm.addEventListener(
+            "submit",
+            async(e)=>{
+
+                e.preventDefault();
+
+                const formData =
+                new FormData(loginForm);
+
+                const data = {
+
+                    email:formData.get("email"),
+
+                    password:formData.get("password")
+
+                };
+
+                const response = await fetch(
+
+                    "/jwt/login",
+
+                    {
+
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+
+                        credentials:"include",
+
+                        body:JSON.stringify(data)
+
+                    }
+
+                );
+
+                const result =
+                await response.json();
+
+                document.getElementById(
+                    "loginMessage"
+                ).innerText =
+                result.message;
+
+                if(response.ok){
+
+                    window.location.href =
+                    "/jwt/welcome";
+
                 }
-        });
 
-        // LOGOUT
-        document.getElementById("logoutBtn")
-            .addEventListener("click", async () => {
-            const response = await fetch("/jwt/logout", {
-                method: "POST"
-            });
-            const result = await response.json();
-            document.getElementById("logoutMessage").innerText =
+            }
+        );
+
+        document.getElementById(
+            "logoutBtn"
+        ).addEventListener(
+            "click",
+            async()=>{
+
+                const response = await fetch(
+
+                    "/jwt/logout",
+
+                    {
+
+                        method:"POST",
+
+                        credentials:"include"
+
+                    }
+
+                );
+
+                const result =
+                await response.json();
+
+                document.getElementById(
+                    "logoutMessage"
+                ).innerText =
                 result.message;
-            document.getElementById("tokenBox").value = "";
-            localStorage.removeItem("accessToken");
-        });
+
+            }
+        );
+
     </script>
+
 </body>
 </html>

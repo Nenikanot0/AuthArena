@@ -36,7 +36,67 @@
             <%= user.email %>
         </p>
 
+        <div class="card refresh-card">
+
+            <h2>
+                Refresh Access Token
+            </h2>
+
+            <button id="refreshBtn">
+                Refresh Token
+            </button>
+
+            <p id="refreshMessage"></p>
+            <textarea
+    id="tokenBox"
+    rows="10"
+    cols="50"
+    readonly
+></textarea>
+
+        </div>
+
     </div>
+
+    <script>
+
+    document.getElementById(
+        "refreshBtn"
+    ).addEventListener(
+        "click",
+        async()=>{
+
+            const response = await fetch(
+
+                "/jwt/refresh",
+
+                {
+
+                    method:"POST",
+
+                    credentials:"include"
+
+                }
+
+            );
+
+            const result =
+            await response.json();
+
+            document.getElementById(
+                "refreshMessage"
+            ).innerText =
+            result.message;
+
+            document.getElementById(
+                "tokenBox"
+            ).value =
+            result.accessToken;
+
+        }
+    );
+
+</script>
 
 </body>
 </html>
