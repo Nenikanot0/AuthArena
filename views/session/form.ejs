@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Authentication</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <%- include("../partials/navbar") %>
+
+    <section class="hero">
+
+        <h1>
+            Session Authentication Lab
+        </h1>
+
+        <p>
+            Server Side Session Authentication System
+        </p>
+
+    </section>
+
+    <section class="jwt-container">
+
+        <div class="card auth-card">
+
+            <h2>
+                Register
+            </h2>
+
+            <form id="registerForm">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+                <button type="submit">
+                    Register
+                </button>
+
+            </form>
+
+            <p id="registerMessage"></p>
+
+        </div>
+
+        <div class="card auth-card">
+
+            <h2>
+                Login
+            </h2>
+
+            <form id="loginForm">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <p id="loginMessage"></p>
+
+        </div>
+
+        <div class="card auth-card">
+            <div class="logout-container">
+                <button id="logoutBtn">
+                    Logout
+                </button>
+                <p id="logoutMessage"></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+
+        const registerForm =
+        document.getElementById(
+            "registerForm"
+        );
+
+        registerForm.addEventListener(
+            "submit",
+            async(e)=>{
+
+                e.preventDefault();
+
+                const formData =
+                new FormData(registerForm);
+
+                const data = {
+
+                    email:
+                    formData.get("email"),
+
+                    password:
+                    formData.get("password")
+
+                };
+
+                const response =
+                await fetch(
+
+                    "/session/register",
+
+                    {
+
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                            "application/json"
+                        },
+
+                        credentials:"include",
+
+                        body:JSON.stringify(data)
+
+                    }
+
+                );
+
+                const result =
+                await response.json();
+
+                document.getElementById(
+                    "registerMessage"
+                ).innerText =
+                result.message;
+
+            }
+        );
+
+        const loginForm =
+        document.getElementById(
+            "loginForm"
+        );
+
+        loginForm.addEventListener(
+            "submit",
+            async(e)=>{
+
+                e.preventDefault();
+
+                const formData =
+                new FormData(loginForm);
+
+                const data = {
+
+                    email:
+                    formData.get("email"),
+
+                    password:
+                    formData.get("password")
+
+                };
+
+                const response =
+                await fetch(
+                    "/session/login",
+                    {
+                        method:"POST",
+                        headers:{
+                            "Content-Type":
+                            "application/json"
+                        },
+                        credentials:"include",
+                        body:JSON.stringify(data)
+
+                    }
+
+                );
+
+                const result =
+                await response.json();
+
+                document.getElementById(
+                    "loginMessage"
+                ).innerText =
+                result.message;
+
+                if(response.ok){
+
+                    window.location.href =
+                    "/session/welcome";
+
+                }
+
+            }
+        );
+
+        document.getElementById(
+            "logoutBtn"
+        ).addEventListener(
+            "click",
+            async()=>{
+
+                const response =
+                await fetch(
+
+                    "/session/logout",
+
+                    {
+
+                        method:"POST",
+
+                        credentials:"include"
+
+                    }
+
+                );
+
+                const result =
+                await response.json();
+
+                document.getElementById(
+                    "logoutMessage"
+                ).innerText =
+                result.message;
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

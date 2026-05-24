@@ -6,9 +6,12 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';  
 import path from "path";
 import { fileURLToPath } from "url"; 
+
 import googleRoutes from "./auth/google/routes/googleRoutes.js";
-import jwtRoutes from "./auth/jwt/routes/jwtRoutes.js";
 import "./auth/google/config/passportGoogle.js";
+import jwtRoutes from "./auth/jwt/routes/jwtRoutes.js";
+import sessionRoutes from "./auth/session/routes/sessionRoute.js";
+
 
 const app=express();
 
@@ -29,7 +32,11 @@ app.use(
     session({
         secret:process.env.JWT_SECRET,
         resave:false,
-        saveUninitialized:false
+        saveUninitialized:false,
+        cookie:{
+            secure:false,
+            maxAge:1000 * 60 * 60
+        }
     })
 ); //creates a unique server side session for user to track them across all requests
 
@@ -38,7 +45,9 @@ app.use(passport.session()); //to connect the passport to active session so to m
 
 app.use("/google",googleRoutes);
 app.use("/jwt",jwtRoutes);
+app.use("/session",sessionRoutes);
 
 app.get("/",(req,res) => { res.render("home") } );
+app.get("/about",(req,res)=>{ res.render("about") });
 
 app.listen(process.env.PORT,()=>{console.log(`Server starting at port ${process.env.PORT}`);});

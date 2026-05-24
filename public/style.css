@@ -137,3 +137,118 @@ button:disabled{
 #warning{
     text-align:center;
 }
+.about-hero{
+
+    width:100%;
+
+    padding:100px 20px;
+
+    text-align:center;
+
+}
+
+.about-hero h1{
+
+    font-size:52px;
+
+    margin-bottom:20px;
+
+    color:#222;
+
+}
+
+.about-hero p{
+
+    font-size:20px;
+
+    color:#666;
+
+}
+
+.about-container{
+
+    width:90%;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+
+    padding-bottom:80px;
+
+}
+
+.about-card{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:18px;
+
+    box-shadow:0 4px 16px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+
+}
+
+.about-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.about-card h2{
+
+    margin-bottom:20px;
+
+    font-size:26px;
+
+    color:#222;
+
+}
+
+.about-card p{
+
+    line-height:1.8;
+
+    color:#555;
+
+    margin-bottom:18px;
+
+}
+
+.about-card ul{
+
+    padding-left:20px;
+
+}
+
+.about-card li{
+
+    margin-bottom:12px;
+
+    color:#444;
+
+    line-height:1.6;
+
+}
+
+@media(max-width:768px){
+
+    .about-hero h1{
+
+        font-size:38px;
+
+    }
+
+    .about-hero p{
+
+        font-size:18px;
+
+    }
+
+}
