@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Authentication</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <%- include("../partials/navbar") %>
+
+    <section class="hero otp-hero">
+        <h1>
+            OTP Authentication Lab
+        </h1>
+        <p>
+            Real Email OTP Verification using Nodemailer
+        </p>
+    </section>
+
+    <section class="otp-main-container">
+        <div class="card otp-card">
+            <h2>
+                Send OTP
+            </h2>
+            <p class="otp-desc">
+                Enter your email to receive a real verification OTP.
+            </p>
+            <form id="otpForm">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+                <button type="submit">
+                    Send OTP
+                </button>
+            </form>
+            <p id="otpMessage"></p>
+        </div>
+        <div class="card otp-card">
+            <h2>
+                Verify OTP
+            </h2>
+        
+            <p class="otp-desc">
+                Enter the OTP received in your email inbox.
+            </p>
+
+            <form id="verifyForm">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="otp"
+                    placeholder="Enter OTP"
+                    required
+                >
+
+                <button type="submit">
+                    Verify OTP
+                </button>
+
+            </form>
+            <p id="verifyMessage"></p>
+        </div>
+
+        <div class="card otp-card">
+            <h2>
+                Logout Session
+            </h2>
+
+            <p class="otp-desc">
+                Destroy the active OTP authenticated session.
+            </p>
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
+            <p id="logoutMessage"></p>
+        </div>
+
+    </section>
+
+    <script>
+        const otpForm =
+        document.getElementById(
+            "otpForm"
+        );
+
+        otpForm.addEventListener(
+            "submit",
+            async(e)=>{
+                e.preventDefault();
+                const formData = new FormData(otpForm);
+                const data = {
+                    email:
+                    formData.get("email")
+                };
+
+                const response = await fetch("/otp/send-otp",
+                    {
+                        method:"POST",
+                        headers:{
+                            "Content-Type":
+                            "application/json"
+                        },
+                        credentials:"include",
+                        body:JSON.stringify(data)
+                    }
+                );
+
+                const result = await response.json();
+
+                document.getElementById( "otpMessage").innerText = result.message;
+            }
+        );
+
+        const verifyForm = document.getElementById( "verifyForm");
+
+        verifyForm.addEventListener("submit", async(e)=>{
+
+                e.preventDefault();
+
+                const formData = new FormData(verifyForm);
+
+                const data = {email:formData.get("email"), otp:formData.get("otp") };
+
+                const response = await fetch("/otp/verify-otp",
+                    {
+
+                        method:"POST",
+                        headers:{
+                            "Content-Type":
+                            "application/json"
+                        },
+
+                        credentials:"include",
+                        body:JSON.stringify(data)
+                    }
+                );
+
+                const result = await response.json();
+
+                document.getElementById( "verifyMessage" ).innerText = result.message;
+
+                if(response.ok){
+                    window.location.href ="/otp/welcome";
+                }
+            }
+        );
+
+        document.getElementById("logoutBtn").addEventListener("click",
+            async()=>{
+                const response = await fetch("/otp/logout",
+                    {
+                        method:"POST",
+                        credentials:"include"
+                    }
+                );
+
+                const result = await response.json();
+
+                document.getElementById("logoutMessage").innerText = result.message;
+            }
+        );
+    </script>
+</body>
+</html>

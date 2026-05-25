@@ -11,7 +11,7 @@ import googleRoutes from "./auth/google/routes/googleRoutes.js";
 import "./auth/google/config/passportGoogle.js";
 import jwtRoutes from "./auth/jwt/routes/jwtRoutes.js";
 import sessionRoutes from "./auth/session/routes/sessionRoute.js";
-
+import otpRoutes from "./auth/otp/routes/otpRoute.js"
 
 const app=express();
 
@@ -46,6 +46,7 @@ app.use(passport.session()); //to connect the passport to active session so to m
 app.use("/google",googleRoutes);
 app.use("/jwt",jwtRoutes);
 app.use("/session",sessionRoutes);
+app.use("/otp",otpRoutes);
 
 app.get("/",(req,res) => { res.render("home") } );
 app.get("/about",(req,res)=>{ res.render("about") });
