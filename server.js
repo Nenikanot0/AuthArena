@@ -12,6 +12,8 @@ import "./auth/google/config/passportGoogle.js";
 import jwtRoutes from "./auth/jwt/routes/jwtRoutes.js";
 import sessionRoutes from "./auth/session/routes/sessionRoute.js";
 import otpRoutes from "./auth/otp/routes/otpRoute.js"
+import mfaRoutes from "./auth/mfa/routes/mfaRoutes.js"
+
 
 const app=express();
 
@@ -47,6 +49,7 @@ app.use("/google",googleRoutes);
 app.use("/jwt",jwtRoutes);
 app.use("/session",sessionRoutes);
 app.use("/otp",otpRoutes);
+app.use("/mfa",mfaRoutes);
 
 app.get("/",(req,res) => { res.render("home") } );
 app.get("/about",(req,res)=>{ res.render("about") });

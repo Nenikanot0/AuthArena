@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        MFA Authentication
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+
+    <script
+        src="https://www.google.com/recaptcha/api.js"
+        async
+        defer
+    ></script>
+
+</head>
+
+<body>
+
+    <%- include("../partials/navbar") %>
+
+    <section class="hero">
+
+        <h1>
+            MFA Authentication Lab
+        </h1>
+
+        <p>
+            QR Code + CAPTCHA +
+            Google Authenticator
+        </p>
+
+    </section>
+
+    <section class="jwt-container">
+
+        <div class="card auth-card">
+
+            <h2>
+                Generate QR
+            </h2>
+
+            <form id="generateForm">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+
+                <div
+                    class="g-recaptcha"
+                    data-sitekey="<%= siteKey %>"
+                ></div>
+
+                <button type="submit">
+                    Generate QR
+                </button>
+
+            </form>
+
+            <div id="qrContainer">
+                <img
+                    id="qrImage"
+                    class="qr-image"
+                >
+            </div>
+
+            <p id="generateMessage"></p>
+
+        </div>
+
+        <div class="card auth-card">
+
+            <h2>
+                Verify OTP
+            </h2>
+
+            <form id="verifyForm">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="token"
+                    placeholder="Enter 6 Digit OTP"
+                    required
+                >
+
+                <button type="submit">
+                    Verify OTP
+                </button>
+
+            </form>
+
+            <p id="verifyMessage"></p>
+
+        </div>
+
+    </section>
+
+    <script>
+
+    const generateForm =
+    document.getElementById(
+        "generateForm"
+    );
+
+    generateForm.addEventListener(
+        "submit",
+        async(e)=>{
+
+            e.preventDefault();
+
+            const formData =
+            new FormData(generateForm);
+
+            const captchaToken =
+            grecaptcha.getResponse();
+
+            const data = {
+
+                email:
+                formData.get("email"),
+
+                captchaToken
+
+            };
+
+            const response =
+            await fetch(
+
+                "/mfa/generate",
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
+
+                    body:JSON.stringify(data)
+
+                }
+
+            );
+
+            const result =
+            await response.json();
+
+            document.getElementById(
+                "generateMessage"
+            ).innerText =
+            result.message;
+
+            if(result.qrCode){
+
+                const qrImage =
+                document.getElementById(
+                    "qrImage"
+                );
+
+                qrImage.src =
+                result.qrCode;
+
+                qrImage.style.display =
+                "block";
+
+            }
+
+        }
+    );
+
+    const verifyForm =
+    document.getElementById(
+        "verifyForm"
+    );
+
+    verifyForm.addEventListener(
+        "submit",
+        async(e)=>{
+            e.preventDefault();
+            const formData = new FormData(verifyForm);
+            const data = {
+                email:formData.get("email"),
+                token:formData.get("token")
+            };
+
+            const response =
+            await fetch(
+                "/mfa/verify",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
+                    body:JSON.stringify(data)
+                }
+            );
+
+            const result = await response.json();
+
+            document.getElementById( "verifyMessage").innerText = result.message;
+
+            if(response.ok){
+                setTimeout(()=>{
+                    window.location.href =
+                    `/mfa/welcome?email=${data.email}`;
+                },1000);
+            }
+        }
+    );
+</script>
+
+</body>
+</html>

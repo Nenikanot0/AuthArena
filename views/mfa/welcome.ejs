@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>MFA Welcome</title>
+
+    <link rel="stylesheet"
+    href="/style.css">
+
+</head>
+
+<body>
+
+    <%- include("../partials/navbar") %>
+
+    <div class="welcome-container">
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2vu8GxdfWZsbzYerZSyzcmezcB-_CP8Rjsg&s"
+            alt="Profile"
+            class="avatar"
+        >
+
+        <h1>
+            MFA Verification Successful
+        </h1>
+
+        <p>
+            <%= user.email %>
+        </p>
+
+    </div>
+
+</body>
+</html>
